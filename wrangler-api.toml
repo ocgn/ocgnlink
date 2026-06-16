@@ -5,5 +5,11 @@ compatibility_date = "2024-01-01"
 [vars]
 AMAP_API_KEY = ""
 
+# Local dev
 [[routes]]
 pattern = "localhost:8787/api/*"
+
+# Production (update your-domain.com)
+# [[routes]]
+# pattern = "your-domain.com/api/*"
+# zone_name = "your-domain.com"
