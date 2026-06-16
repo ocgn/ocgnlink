@@ -1,0 +1,9 @@
+name = "ocgnlink-api"
+main = "workers/api/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+AMAP_API_KEY = ""
+
+[[routes]]
+pattern = "localhost:8787/api/*"
