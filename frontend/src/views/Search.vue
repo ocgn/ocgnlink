@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-6xl mx-auto px-4 py-6">
+  <div class="max-w-7xl mx-auto px-6 py-6">
     <!-- 搜索栏 -->
     <div class="mb-6">
       <SearchBar />
@@ -82,7 +82,7 @@
           </div>
 
           <!-- 酒店网格 -->
-          <div v-if="sortedHotels.length > 0" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div v-if="sortedHotels.length > 0" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
             <HotelCard
               v-for="hotel in sortedHotels"
               :key="hotel.name"
@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import SearchBar from '@/components/SearchBar.vue';
 import HotelCard from '@/components/HotelCard.vue';
@@ -159,6 +159,7 @@ async function fetchData() {
 
   loading.value = true;
   error.value = null;
+  hotelStore.setHotels([]); // 清空旧数据
 
   try {
     const result = await searchHotels({ city, keyword });
@@ -172,4 +173,6 @@ async function fetchData() {
 }
 
 onMounted(fetchData);
+// 路由变化时重新搜索
+watch(() => route.query, fetchData);
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-6xl mx-auto px-4 py-6">
+  <div class="max-w-7xl mx-auto px-6 py-6">
     <div class="mb-6 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <h2 class="text-xl font-bold text-gray-900">酒店对比</h2>

@@ -13,7 +13,7 @@
         @keydown.up.prevent="cityIdx > 0 ? cityIdx-- : null"
         @keydown.enter.prevent="selectCity"
         @keydown.escape="cityOpen = false"
-        @blur="setTimeout(() => cityOpen = false, 160)"
+        @blur="onCityBlur"
       />
       <svg class="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -52,7 +52,7 @@
         @keydown.up.prevent="kwIdx > 0 ? kwIdx-- : null"
         @keydown.enter.prevent="selectLk"
         @keydown.escape="kwOpen = false"
-        @blur="setTimeout(() => kwOpen = false, 160)"
+        @blur="onKwBlur"
       />
       <svg class="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -189,6 +189,14 @@ function onCityInput() {
   cityOpen.value = true;
   cityIdx.value = 0;
   citySelected.value = '';
+}
+
+function onCityBlur() {
+  setTimeout(() => cityOpen.value = false, 160);
+}
+
+function onKwBlur() {
+  setTimeout(() => kwOpen.value = false, 160);
 }
 
 function pickCity(name: string) {
