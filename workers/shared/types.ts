@@ -4,8 +4,10 @@ export interface Hotel {
   price: number;
   rating: number;
   address: string;
+  lat: number;
+  lng: number;
   distance: number;
-  source: 'meituan' | 'ctrip';
+  source: 'hotel' | 'meituan' | 'ctrip';
   url: string;
   images: string[];
   facilities: string[];

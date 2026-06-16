@@ -1,5 +1,6 @@
 export interface WorkerEnv {
   AMAP_API_KEY?: string;
+  AMAP_SECURITY_KEY?: string;
   OPENAI_API_KEY?: string;
   CLAUDE_API_KEY?: string;
   DEEPSEEK_API_KEY?: string;

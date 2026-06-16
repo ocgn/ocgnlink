@@ -10,10 +10,8 @@ export interface SearchHotelsParams {
 
 export interface HotelSearchResult {
   hotels: Hotel[];
-  sources: {
-    meituan: boolean;
-    ctrip: boolean;
-  };
+  source: string;
+  total: number;
 }
 
 export async function searchHotels(params: SearchHotelsParams): Promise<HotelSearchResult> {

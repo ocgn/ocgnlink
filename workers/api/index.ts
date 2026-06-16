@@ -1,12 +1,11 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import type { WorkerEnv } from '../shared/config';
 import { hotelRouter } from './hotels/index';
 import { aiRouter } from './ai/analyze';
 import { mapRouter } from './map/search';
 
-type Bindings = { env: WorkerEnv } & WorkerEnv;
-
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono<{ Bindings: WorkerEnv }>();
 
 // 全局 CORS 中间件
 app.use('*', cors({

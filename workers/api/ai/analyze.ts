@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import type { Hotel, AiAnalyzeResponse } from '../../shared/types';
+import type { WorkerEnv } from '../../shared/config';
 
 const AI_PROVIDERS: Record<string, { endpoint: string; format: 'openai' | 'claude'; model: string }> = {
   openai: {
@@ -19,7 +20,7 @@ const AI_PROVIDERS: Record<string, { endpoint: string; format: 'openai' | 'claud
   },
 };
 
-export const aiRouter = new Hono();
+export const aiRouter = new Hono<{ Bindings: WorkerEnv }>();
 
 // POST /api/ai/analyze
 aiRouter.post('/analyze', async (c) => {
@@ -31,7 +32,8 @@ aiRouter.post('/analyze', async (c) => {
       return c.json({ success: false, error: 'No hotel data provided' }, 400);
     }
 
-    const apiKey = c.env[`${provider.toUpperCase()}_API_KEY` as keyof typeof c.env] as string | undefined;
+    const keyName = `${provider.toUpperCase()}_API_KEY` as keyof WorkerEnv;
+    const apiKey = c.env[keyName] as string | undefined;
     if (!apiKey) {
       return c.json({ success: false, error: `API key for ${provider} not configured` }, 400);
     }
@@ -59,18 +61,31 @@ aiRouter.post('/analyze', async (c) => {
 });
 
 function buildAnalysisPrompt(meituanHotels: Hotel[], ctripHotels: Hotel[]): string {
-  const formatHotels = (hotels: Hotel[], source: string) =>
-    hotels.map((h, i) => `${i + 1}. ${h.name} - ¥${h.price}/晚 - 评分:${h.rating} - ${h.address}`).join('\n');
+  const formatHotels = (hotels: Hotel[]) =>
+    hotels.map((h, i) =>
+      `${i + 1}. ${h.name}
+   - 价格: ¥${h.price}/晚
+   - 评分: ${h.rating}/5
+   - 地址: ${h.address}
+   - 房型: ${h.roomType || '未知'}
+   - 设施: ${h.facilities.join('、') || '未知'}`
+    ).join('\n\n');
 
-  return `你是一个酒店选择助手。以下是两个平台的酒店数据对比：
+  const hotelList = [...meituanHotels, ...ctripHotels].filter(Boolean);
 
-[美团数据]
-${formatHotels(meituanHotels, '美团') || '（无数据）'}
+  return `你是一个资深的酒店评测专家。以下是搜索到的酒店列表：
 
-[携程数据]
-${formatHotels(ctripHotels, '携程') || '（无数据）'}
+${formatHotels(hotelList)}
 
-请从价格、评分、位置、设施等方面进行对比分析，给出推荐建议。`;
+请充分发挥你对这些酒店的了解，从以下几个方面进行深入分析：
+
+1. **价格与性价比** — 对比各酒店的价格水平，哪些物超所值
+2. **口碑与评价** — 根据你的知识，这些酒店在住客中的口碑如何，网上的常见评价（服务、卫生、位置等）
+3. **位置便利性** — 各酒店的地理位置优劣，周边交通、餐饮、景点情况
+4. **设施与服务** — 对比各酒店的设施配置和服务水平
+5. **适用人群推荐** — 分别适合商务出行、家庭旅游、情侣度假等
+
+最后给出一个明确的**综合推荐排名**，说明首选和备选方案。`;
 }
 
 async function callAiModel(prompt: string, config: typeof AI_PROVIDERS[string], apiKey: string): Promise<string> {
