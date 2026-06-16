@@ -1,0 +1,32 @@
+{
+  "models": {
+    "default": "openai",
+    "providers": {
+      "openai": {
+        "name": "OpenAI",
+        "endpoint": "https://api.openai.com/v1/chat/completions",
+        "apiKey": "",
+        "model": "gpt-4o",
+        "maxTokens": 4096
+      },
+      "claude": {
+        "name": "Claude",
+        "endpoint": "https://api.anthropic.com/v1/messages",
+        "apiKey": "",
+        "model": "claude-sonnet-4-20250514",
+        "maxTokens": 4096
+      },
+      "deepseek": {
+        "name": "DeepSeek",
+        "endpoint": "https://api.deepseek.com/v1/chat/completions",
+        "apiKey": "",
+        "model": "deepseek-chat",
+        "maxTokens": 4096
+      }
+    }
+  },
+  "amap": {
+    "apiKey": "",
+    "baseUrl": "https://restapi.amap.com/v3"
+  }
+}

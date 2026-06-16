@@ -1,0 +1,16 @@
+{
+  "name": "ocgnlink",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "workers"
+  ],
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:api": "cd workers && wrangler dev --config ../wrangler-api.toml",
+    "dev:mcp": "cd workers && wrangler dev --config ../wrangler-mcp.toml",
+    "build:frontend": "cd frontend && npm run build",
+    "deploy:api": "cd workers && wrangler deploy --config ../wrangler-api.toml",
+    "deploy:mcp": "cd workers && wrangler deploy --config ../wrangler-mcp.toml"
+  }
+}
