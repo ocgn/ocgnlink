@@ -3,8 +3,6 @@ main = "workers/api/index.ts"
 compatibility_date = "2024-01-01"
 
 [vars]
-AMAP_API_KEY = ""
-DEEPSEEK_API_KEY = ""
 
 # Production routes (uncomment and set your domain)
 # routes = ["your-domain.com/api/*"]

@@ -1,11 +1,9 @@
-import apiClient from './client';
 import type { Hotel } from '../../../workers/shared/types';
+import apiClient from "@/api/client";
 
 export interface SearchHotelsParams {
   city: string;
   keyword?: string;
-  lat?: number;
-  lng?: number;
 }
 
 export interface HotelSearchResult {
